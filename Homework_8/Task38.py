@@ -8,6 +8,7 @@ def print_help():
     print("6 - Выход с сохранением")
     print("7 - Выход без сохранения")
 
+
 def print_book():
     for n in data:
         print(n)
@@ -52,7 +53,7 @@ def add_cont():
 
 
 def exit_save():
-    file_base = open("C:/Git/GB_Python_Homework/Homework_8/base.txt", "w")
+    file_base = open("C:/Git/GB_Python_Homework/Homework_8/base.txt", "w", encoding="utf-8")
     for n in data:
         file_base.write(n)
     file_base.close()
@@ -60,7 +61,7 @@ def exit_save():
     exit()
 
 
-file_base = open("C:/Git/GB_Python_Homework/Homework_8/base.txt", "r")
+file_base = open("C:/Git/GB_Python_Homework/Homework_8/base.txt", "r", encoding="utf-8")
 data = file_base.readlines()
 file_base.close()
 
