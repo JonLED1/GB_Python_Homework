@@ -1,55 +1,54 @@
-class PhoneBook:
+import view, text
+path = 'C:/Git/GB_Python_Homework/Homework_9/phone.txt'
 
-    def __init__(self, path: str = 'phones.txt'):
-        self._phone_book: list[dict[str, str]] = []
-        self._path = path
-        self._last_id = 0
 
-    def open(self):
-        with open(self._path, 'r', encoding='UTF-8') as file:
-            data = file.readlines()
-        for contact in data:
-            contact = contact.strip().split(':')
-            new = {'id': contact[0], 'name': contact[1], 'phone': contact[2], 'comment': contact[3]}
-            self._phone_book.append(new)
+def open_pb():
+    file_base = open(path, "r", encoding="utf-8")
+    data = file_base.readlines()
+    file_base.close()
+    return data
 
-    def save(self):
-        data = []
-        for contact in self._phone_book:
-            data.append(':'.join([value for value in contact.values()]))
-        data = '\n'.join(data)
-        with open(self._path, 'w', encoding='UTF-8') as file:
-            file.write(data)
+def search_contact(pb):
+    find_date = input()
+    search_list = []
+    for n in pb:
+        if find_date in n:
+            search_list.append(n)
+    return search_list
 
-    def load(self):
-        return self._phone_book
+def change_cont(pb):
+    find_date = input()
+    if find_date == "":
+        return text.error_
+    for n in range(len(pb)):
+        if find_date in pb[n]:
+            view.print_message(text.find_contact(pb[n]))
+            ch_date = input(view.text.new_date_text)
+            return [ch_date, n]
+        else:
+            view.print_message(text.error_)
+            return text.error_
 
-    def add(self, new: dict[str, str]) -> str:
-        self._last_id += 1
-        new['id'] = str(self._last_id)
-        self._phone_book.append(new)
-        return new.get('name')
 
-    def search(self, word: str) -> list[dict[str, str]]:
-        result: list[dict[str, str]] = []
-        for contact in self._phone_book:
-            for field in contact.values():
-                if word.lower() in field.lower():
-                    result.append(contact)
-                    break
-        return result
+def del_contact(pb):
+    find_date = input()
+    for n in range(len(pb)):
+        if find_date in pb[n]:
+            view.print_message(text.del_contact(pb[n]))
+            if input() == "1":
+                return n
+    view.print_message(text.error_)
+    return text.error_
 
-    def change(self, new: dict, index: int | str) -> str:
-        for contact in self._phone_book:
-            if index == contact.get('id'):
-                contact['name'] = new.get('name', contact.get('name'))
-                contact['phone'] = new.get('phone', contact.get('phone'))
-                contact['comment'] = new.get('comment', contact.get('comment'))
-                return contact.get('name')
-
-    # def show(self):
-    #     print('\n' + '=' * 71)
-    #     for contact in self._phone_book:
-    #         print(
-    #             f'{contact.get("id"):>3}. {contact.get("name"):<20} | {contact.get("phone"):^20} | {contact.get("comment"):<20}')
-    #     print('=' * 71 + '\n')
+def add_contact(pb):
+    new_contact = input()
+    if new_contact == "":
+        view.print_message(text.error_)
+        return text.error_
+    return new_contact
+         
+def save_pb(pb):
+    file_base = open(path, "w", encoding="utf-8")
+    for n in pb:
+        file_base.write(n)
+    file_base.close()
